@@ -1,0 +1,57 @@
+### List polls
+
+GET http://localhost:3000/polls HTTP/1.1
+Authorization: citizen:citizen
+
+### Add new poll
+
+POST http://localhost:3000/polls HTTP/1.1
+content-type: application/json
+Authorization: admin:admin
+
+{
+    "title": "sample"
+}
+
+### Get plans for poll
+
+GET http://localhost:3000/polls/0/plans HTTP/1.1
+Authorization: citizen:citizen
+
+### Add new plan for poll
+
+POST http://localhost:3000/polls/0/plans HTTP/1.1
+content-type: application/json
+Authorization: deputy:deputy
+
+{
+    "title": "plan",
+    "desc": "desc",
+    "party": "Right"
+}
+
+### Get plan with id
+
+GET http://localhost:3000/polls/0/plans/0 HTTP/1.1
+Authorization: citizen:citizen
+
+### Modify plan with id
+
+POST http://localhost:3000/polls/0/plans/0 HTTP/1.1
+content-type: application/json
+Authorization: deputy:deputy
+
+{
+    "title": "Modified plan",
+    "desc": "Modified desc"
+}
+
+### Get votes
+
+GET http://localhost:3000/votes HTTP/1.1
+Authorization: citizen:citizen
+
+### Add vote
+
+POST http://localhost:3000/votes/0 HTTP/1.1
+Authorization: deputy:deputy
