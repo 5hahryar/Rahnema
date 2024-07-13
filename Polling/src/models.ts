@@ -19,6 +19,8 @@ type Plan = {
 type Poll = {
     id: string,
     title: string,
+    planingDeadline: Date,
+    votingDeadline: Date,
 }
 
 export { Role, User, Poll, Plan, Party }

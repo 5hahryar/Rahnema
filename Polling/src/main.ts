@@ -26,6 +26,8 @@ app.post("/polls", authorizeMiddleware, (req, res) => {
     polls.push({
         id: polls.length.toString(),
         title: req.body.title,
+        planingDeadline: new Date(req.body.planingDeadline),
+        votingDeadline: new Date(req.body.votingDeadline),
     });
     res.send("Poll added!");
 });
@@ -40,8 +42,10 @@ app.get("/polls/:id/plans", authorizeMiddleware, (req, res) => {
 });
 
 app.post("/polls/:id/plans", authorizeMiddleware, (req, res) => {
-    const isPollAvailable = polls.some((poll) => poll.id == req.params.id);
-    if(!isPollAvailable) throw Error("Poll not available!")
+    const poll = polls.find((poll) => poll.id == req.params.id);
+    if(!poll) throw Error("Poll not available!")
+
+    if(new Date() > poll.planingDeadline) throw Error("Planning deadline has passed!")
 
     plans.push({
         id: plans.length.toString(),
@@ -68,6 +72,8 @@ app.post("/polls/:id/plans/:planId", authorizeMiddleware, (req, res) => {
     const poll = polls.find((poll) => poll.id == req.params.id);
     if(!poll) throw Error("Poll not found!")
 
+    if(new Date() > poll.planingDeadline) throw Error("Planning deadline has passed!")
+
     const plan = plans.find((p) => p.id == req.params.planId);
     if(!plan) throw Error("Plan not found!")
 
@@ -83,6 +89,10 @@ const fn = () => () => {}
 app.post("/votes/:planId", authorizeMiddleware, (req, res) => {
     const plan = plans.find((p) => p.id == req.params.planId);
     if(!plan) throw Error("Plan not found!")
+
+    let poll = polls.find((poll) => poll.id === plan.pollId);
+    if(!poll) throw Error("Poll not found!")
+    if(new Date() > poll.votingDeadline) throw Error("Planning deadline has passed!")
 
     plan.votes++;
 

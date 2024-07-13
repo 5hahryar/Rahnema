@@ -10,7 +10,9 @@ content-type: application/json
 Authorization: admin:admin
 
 {
-    "title": "sample"
+    "title": "sample",
+    "planingDeadline": "2023-07-13T11:30:30",
+    "votingDeadline": "2023-07-13T11:30:30"
 }
 
 ### Get plans for poll

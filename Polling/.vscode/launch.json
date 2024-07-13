@@ -11,10 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "/Polls/main.ts",
-            "outFiles": [
-                "${workspaceFolder}/**/*.js"
-            ]
+            "program": "${file}"
         }
     ]
 }

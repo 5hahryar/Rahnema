@@ -1,7 +1,0 @@
-{
-    "compilerOptions": {
-        "target": "ESNext",
-        "strict": true,
-        "noUncheckedIndexedAccess": true
-    }
-}
