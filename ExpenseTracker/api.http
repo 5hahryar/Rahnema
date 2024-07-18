@@ -1,0 +1,28 @@
+### List groups
+
+POST  http://localhost:3000/groups HTTP/1.1
+content-type: application/json
+Authorization: ali:ali
+
+{
+    "name": "test",
+    "usernames": ["ali","vali","bali"]
+}
+
+###
+
+POST  http://localhost:3000/expenses HTTP/1.1
+content-type: application/json
+Authorization: ali:ali
+
+{
+    "title": "test",
+    "amount": 800,
+    "payerUsername": "vali",
+    "groupName": "test"
+}
+
+###
+
+GET  http://localhost:3000/groups/test/balance HTTP/1.1
+Authorization: ali:ali
