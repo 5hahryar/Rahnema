@@ -41,10 +41,8 @@ describe("expense", () => {
         });
     });
 
-    //Q: how to avoid having false positive tests?
     describe("post", () => {
         it("should add expense", async() => {
-            //Q: is this ok?
             await request(api)
             .post("/groups")
             .set("Authorization", "ali:ali")

@@ -1,5 +1,5 @@
-import { app } from "./api";
+import { api } from "./api";
 
-app.listen(3000, () => {
+api.listen(3000, () => {
     console.log("Listening on 3000")
 });

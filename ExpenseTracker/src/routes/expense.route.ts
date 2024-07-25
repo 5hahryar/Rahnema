@@ -1,12 +1,10 @@
 import { Router } from "express";
 import { authMiddleware } from "../middleware/authMiddleware";
-import { groups } from "../data/groups";
-import { ZodError, string, z } from "zod";
-import { users } from "../data/users";
-import { expenses } from "../data/expenses";
-import { Expense } from "../models/expense";
+import { ZodError, z } from "zod";
+import { expenseService } from "../dependency";
+import { HttpError } from "../../utils/httpError";
 
-export const expenseRoutes = Router();
+export const expensesRoutes = Router();
 
 const ExpenseDTO = z.object({
     title: z.string().min(1),
@@ -15,45 +13,40 @@ const ExpenseDTO = z.object({
     groupName: z.string().min(1),
 });
 
-expenseRoutes.get("/expenses", authMiddleware, (req, res) => {
-    if(req.query.payerUsername) {
-        const payerUsername = req.query.payerUsername;
-        return res.send(expenses.filter((e) => e.payerUsername === payerUsername));
+expensesRoutes.get("/", authMiddleware, (req, res) => {
+    try {
+        if(req.query.payerUsername) {
+            const payerUsername = req.query.payerUsername.toString();
+            return res.send(expenseService.getExpensesByPayer(payerUsername));
+        }
+
+        if(req.query.username) {
+            const username = req.query.username as string;
+            return res.send(expenseService.getExpensesForUser(username));
+        }
+
+        return res.send(expenseService.getAllExpenses());
+    } catch(e) {
+        if(e instanceof ZodError) {
+            return res.status(400).send("Bad request!");
+        } else if(e instanceof HttpError) {
+            return res.status(e.statusCode).send(e.message);
+        }
     }
-
-    if(req.query.username) {
-        const username = req.query.username as string
-        const joinedGroupsNames = groups.filter((g) => g.usernames.includes(username)).map((g) => g.name);
-
-        let userExpenses: Expense[] = [];
-        joinedGroupsNames.forEach((groupName) => {
-            userExpenses = [...userExpenses , ...expenses.filter((e) => e.groupName === groupName)]
-        });
-
-        return res.send(userExpenses);
-    }
-
-    return res.send(expenses);
 });
 
-expenseRoutes.post("/expenses", authMiddleware, (req, res) => {
+expensesRoutes.post("/", authMiddleware, (req, res) => {
     try {
+        //TODO: move dto class!
         const dto = ExpenseDTO.parse(req.body);
-
-        if(!users.some((u) => u.username === dto.payerUsername)) {
-            return res.status(400).send("Payer username not found!");
-        }
-
-        if(!groups.some((g) => g.name === dto.groupName)) {
-            return res.status(400).send("Group not found!");
-        }
-
-        expenses.push(dto as Expense);
+        expenseService.addExpense(dto);
 
         return res.send("Expense added!");
     } catch(e) {
         if(e instanceof ZodError) {
             return res.status(400).send("Bad request!");
+        } else if(e instanceof HttpError) {
+            return res.status(e.statusCode).send(e.message);
         }
     }
 });

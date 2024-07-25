@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express"
 import { isNonEmptyString } from "../../utils/stringUtils";
-import { users } from "../data/users";
+import { userRepository } from "../dependency";
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     if(!req.headers.authorization) {
@@ -12,7 +12,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     if(
         !isNonEmptyString(username) || 
         !isNonEmptyString(password) || 
-        !users.some((u) => u.username === username && u.password === password)
+        !userRepository.getAllUsers().some((u) => u.username === username && u.password === password)
     ) {
         res.status(401).send("Username or password not found!");
         return next(); 

@@ -25,7 +25,6 @@ plansRoutes.post("/polls/:id/plans", authorizeMiddleware, (req, res) => {
     res.send(`Plan added for poll #${req.params.id}`);
 });
 
-//QUESTION: "/polls/:id/plans/:planId" or "/plans/:id"?
 plansRoutes.get("/polls/:id/plans/:planId", authorizeMiddleware, (req, res) => {
     const poll = polls.find((poll) => poll.id == req.params.id);
     if(!poll) throw Error("Poll not found!")

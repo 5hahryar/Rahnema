@@ -3,10 +3,10 @@ import { pollsRoutes } from "./routes/polls.route";
 import { plansRoutes } from "./routes/plans.route";
 import { votesRoutes } from "./routes/votes.route";
 
-export const app = express()
+export const api = express()
 
-app.use(express.json());
+api.use(express.json());
 
-app.use(pollsRoutes);
-app.use(plansRoutes);
-app.use(votesRoutes);
+api.use(pollsRoutes);
+api.use(plansRoutes);
+api.use(votesRoutes);

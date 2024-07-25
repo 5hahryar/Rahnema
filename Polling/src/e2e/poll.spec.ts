@@ -1,23 +1,23 @@
-import { app } from "../api"
+import { api } from "../api"
 import request from "supertest"
 
 describe("Poll", () => {
     describe("Create", () => {
         it("should fail if not authorized", async () => {
-            await request(app)
+            await request(api)
             .post("/polls")
             .expect(401);
         })
 
         it("should fail when access is not admin", async () => {
-            await request(app)
+            await request(api)
             .post("/polls")
             .set("Authorization", "citizen:citizen")
             .expect(403);
         })
 
         it("should create poll", async () => {
-            await request(app)
+            await request(api)
             .post("/polls")
             .set("Authorization", "admin:admin")
             .send({
@@ -29,7 +29,7 @@ describe("Poll", () => {
         })
 
         it("should fail create poll if title is empty", async () => {
-            await request(app)
+            await request(api)
             .post("/polls")
             .set("Authorization", "admin:admin")
             .send({

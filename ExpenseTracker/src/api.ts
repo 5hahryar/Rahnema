@@ -1,9 +1,9 @@
 import express from "express";
-import { groupRoutes } from "./routes/group.route";
-import { expenseRoutes } from "./routes/expense.route";
+import { groupsRoutes } from "./routes/group.route";
+import { expensesRoutes } from "./routes/expense.route";
 
 export const api = express();
 
 api.use(express.json());
-api.use(groupRoutes);
-api.use(expenseRoutes);
+api.use("/groups", groupsRoutes);
+api.use("/expenses", expensesRoutes);
