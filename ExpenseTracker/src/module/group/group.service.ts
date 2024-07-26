@@ -59,10 +59,10 @@ export class GroupService {
         let positives = balance.filter((b) => b.balance > 0);
         let negatives = balance.filter((b) => b.balance < 0);
     
-        console.log(totalExpenseByEach);
-        console.log("bal: ", balance);
-        console.log("total: ", total);
-        console.log("share: ", share);
+        // console.log(totalExpenseByEach);
+        // console.log("bal: ", balance);
+        // console.log("total: ", total);
+        // console.log("share: ", share);
     
         const owingTable: string[] = [];
         while(negatives.length > 0) {
@@ -79,7 +79,6 @@ export class GroupService {
             if(positive.balance <= 0) positives.shift();
         }
     
-        
         return owingTable;
     }
 }

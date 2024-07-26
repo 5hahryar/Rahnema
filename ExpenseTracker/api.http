@@ -1,3 +1,8 @@
+### Get groups
+
+GET   http://localhost:3000/groups HTTP/1.1
+Authorization: ali:ali
+
 ### List groups
 
 POST  http://localhost:3000/groups HTTP/1.1
@@ -9,7 +14,7 @@ Authorization: ali:ali
     "usernames": ["ali","vali","bali"]
 }
 
-###
+### Add expense
 
 POST  http://localhost:3000/expenses HTTP/1.1
 content-type: application/json
@@ -17,10 +22,15 @@ Authorization: ali:ali
 
 {
     "title": "test",
-    "amount": 800,
-    "payerUsername": "vali",
+    "amount": 10,
+    "payerUsername": "bali",
     "groupName": "test"
 }
+
+### Get all expenses
+
+GET   http://localhost:3000/expenses HTTP/1.1
+Authorization: ali:ali
 
 ###
 

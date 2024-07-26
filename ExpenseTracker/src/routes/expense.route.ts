@@ -3,6 +3,7 @@ import { authMiddleware } from "../middleware/authMiddleware";
 import { ZodError, z } from "zod";
 import { expenseService } from "../dependency";
 import { HttpError } from "../../utils/httpError";
+import { handleHttpRequest } from "../../utils/requestHandler";
 
 export const expensesRoutes = Router();
 
@@ -14,7 +15,7 @@ const ExpenseDTO = z.object({
 });
 
 expensesRoutes.get("/", authMiddleware, (req, res) => {
-    try {
+    handleHttpRequest(res, () => {
         if(req.query.payerUsername) {
             const payerUsername = req.query.payerUsername.toString();
             return res.send(expenseService.getExpensesByPayer(payerUsername));
@@ -25,29 +26,15 @@ expensesRoutes.get("/", authMiddleware, (req, res) => {
             return res.send(expenseService.getExpensesForUser(username));
         }
 
-        return res.send(expenseService.getAllExpenses());
-    } catch(e) {
-        if(e instanceof ZodError) {
-            return res.status(400).send("Bad request!");
-        } else if(e instanceof HttpError) {
-            return res.status(e.statusCode).send(e.message);
-        }
-    }
+        return expenseService.getAllExpenses();
+    });
 });
 
 expensesRoutes.post("/", authMiddleware, (req, res) => {
-    try {
-        //TODO: move dto class!
+    handleHttpRequest(res, () => {
         const dto = ExpenseDTO.parse(req.body);
         expenseService.addExpense(dto);
-
-        return res.send("Expense added!");
-    } catch(e) {
-        if(e instanceof ZodError) {
-            return res.status(400).send("Bad request!");
-        } else if(e instanceof HttpError) {
-            return res.status(e.statusCode).send(e.message);
-        }
-    }
+        return "Expense added!";
+    });
 });
 

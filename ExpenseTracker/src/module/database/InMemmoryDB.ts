@@ -1,24 +1,26 @@
 import { User } from "../user/model/user";
 import { ExpenseEntity, GroupEntity, IDatabase, UserEntity } from "./IDatabase";
 
+export const users: UserEntity[] = [
+    {
+        username: "ali",
+        password: "ali"
+    },
+    {
+        username: "vali",
+        password: "vali"
+    },
+    {
+        username: "bali",
+        password: "bali"
+    },
+];
+
 export class InMemmoryDB implements IDatabase {
 
     private groups: GroupEntity[] = [];
     private expenses: ExpenseEntity[] = [];
-    private users: UserEntity[] = [
-        {
-            username: "ali",
-            password: "ali"
-        },
-        {
-            username: "vali",
-            password: "vali"
-        },
-        {
-            username: "bali",
-            password: "bali"
-        },
-    ]
+    private users: UserEntity[] = users;
 
     insertGroup(group: GroupEntity): GroupEntity {
         this.groups.push(group);
